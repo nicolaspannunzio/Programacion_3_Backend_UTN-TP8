@@ -18,7 +18,7 @@ import java.util.List;
 
 @Entity
 @Data
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(callSuper = true, exclude = "pedidos")
 @NoArgsConstructor
 @AllArgsConstructor
 @SuperBuilder
@@ -30,11 +30,9 @@ public class Usuario extends Base {
     private String celular;
     private String contraseña;
 
-    // Le decimos que guarde el texto ("ADMIN" o "USUARIO") y no un número
     @Enumerated(EnumType.STRING)
     private Rol rol;
 
-    // Relación 1 a N: Un Usuario tiene Muchos Pedidos
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
     private List<Pedido> pedidos = new ArrayList<>();

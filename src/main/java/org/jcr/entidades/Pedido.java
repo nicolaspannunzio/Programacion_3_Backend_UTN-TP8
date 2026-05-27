@@ -17,13 +17,12 @@ import org.jcr.enums.Estado;
 import org.jcr.enums.FormaPago;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Data
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(callSuper = true, exclude = "detalles")
 @NoArgsConstructor
 @AllArgsConstructor
 @SuperBuilder
@@ -50,16 +49,15 @@ public class Pedido extends Base implements Calculable {
     public void addDetallePedido(int cantidad, Producto producto) {
         DetallePedido detalle = DetallePedido.builder()
                 .eliminado(false)
-                .createdAt(LocalDateTime.now())
                 .cantidad(cantidad)
                 .subtotal(producto.getPrecio() * cantidad)
                 .producto(producto)
-                .pedido(this) 
+                .pedido(this)
                 .build();
         detalles.add(detalle);
     }
 
-    public DetallePedido findeDetallePedidoByProducto(Producto producto) {
+    public DetallePedido findDetallePedidoByProducto(Producto producto) {
         return detalles.stream()
                 .filter(d -> d.getProducto().equals(producto))
                 .findFirst()
